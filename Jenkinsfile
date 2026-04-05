@@ -16,7 +16,6 @@ pipeline {
             steps {
                 script {
                     echo 'Building Frontend...'
-                    // Build inside a temporary container directory to avoid Jenkins volume file-locking bugs
                     sh '''
                         docker run --rm -u root -v ${WORKSPACE}:/workspace node:18-alpine sh -c "
                             cp -r /workspace/frontend /tmp/frontend &&
