@@ -30,8 +30,6 @@ pipeline {
                 }
             }
         }
-
-
         stage('Deploy (Part-II)') {
             steps {
                 script {
