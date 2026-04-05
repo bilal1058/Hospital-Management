@@ -32,14 +32,6 @@ pipeline {
             }
         }
 
-        stage('Verify Backend') {
-            steps {
-                script {
-                    echo 'Verifying Backend Requirements...'
-                    sh 'pip install --user -r backend/requirements.txt'
-                }
-            }
-        }
 
         stage('Deploy (Part-II)') {
             steps {
