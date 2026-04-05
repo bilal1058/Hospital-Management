@@ -1,0 +1,34 @@
+# --- Part-I Local Files (Exclude for Project Safety) ---
+docker-compose.yml
+Dockerfile
+Hospital.zip
+*.zip
+hospital-deployment-ready.zip
+
+# --- Environment & Secrets ---
+.env
+backend/.env
+.venv/
+venv/
+env/
+python_venv/
+
+# --- Database ---
+*.db
+*.sqlite3
+
+# --- Frontend Node Modules ---
+node_modules/
+frontend/node_modules/
+dist/
+build/
+.npm/
+
+# --- IDE & OS Junk ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+*$py.class

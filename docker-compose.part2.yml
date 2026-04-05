@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  db-v2:
+    image: postgres:15-alpine
+    container_name: hospital-db-v2
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: hospital_db_v2
+    volumes:
+      - postgres_data_v2:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d hospital_db_v2"]
+      interval: 10s
+    networks:
+      - hospital-network-v2
+
+  web-v2:
+    image: python:3.11-slim
+    container_name: hospital-web-v2
+    restart: always
+    environment:
+      DATABASE_URL: postgresql://postgres:yourpassword@db-v2:5432/hospital_db_v2
+      SECRET_KEY: secret-key-bilal878
+      ENVIRONMENT: production
+    ports:
+      - "8300:8200"
+    volumes:
+      # Instructors requirement: Attach a volume for the code instead of Dockerfile build
+      - ./backend:/app/backend
+      # We also mount the build directory (Jenkins would have built this)
+      - ./backend/static/build:/app/backend/static/build
+    working_dir: /app/backend
+    command: >
+      sh -c "apt-get update && apt-get install -y postgresql-client && 
+             pip install --no-cache-dir -r requirements.txt && 
+             uvicorn app.main:app --host 0.0.0.0 --port 8200"
+    depends_on:
+      db-v2:
+        condition: service_healthy
+    networks:
+      - hospital-network-v2
+
+volumes:
+  postgres_data_v2:
+
+networks:
+  hospital-network-v2:
+    driver: bridge
