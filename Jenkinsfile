@@ -16,16 +16,18 @@ pipeline {
             steps {
                 script {
                     echo 'Building Frontend...'
-                    docker.image('node:18-alpine').inside('-u root') {
-                        sh '''
-                            cd frontend
-                            npm install
-                            npm run build
-                            mkdir -p ../backend/static/build
-                            cp -r build/* ../backend/static/build/
-                            chmod -R 777 ../backend/static/build
-                        '''
-                    }
+                    // Build inside a temporary container directory to avoid Jenkins volume file-locking bugs
+                    sh '''
+                        docker run --rm -u root -v ${WORKSPACE}:/workspace node:18-alpine sh -c "
+                            cp -r /workspace/frontend /tmp/frontend &&
+                            cd /tmp/frontend &&
+                            npm install &&
+                            npm run build &&
+                            mkdir -p /workspace/backend/static/build &&
+                            cp -r build/* /workspace/backend/static/build/ &&
+                            chmod -R 777 /workspace/backend/static/build
+                        "
+                    '''
                 }
             }
         }
