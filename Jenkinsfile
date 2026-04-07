@@ -21,7 +21,7 @@ pipeline {
     }
     post {
         always { echo "Build took: ${currentBuild.durationString}" }
-        success { echo '✅ Live on Port 8300' }
-        failure { echo '❌ Failed'; sh '$COMPOSE logs --tail=20 || true' }
+        success { echo 'Live on Port 8300' }
+        failure { echo 'Failed'; sh '$COMPOSE logs --tail=20 || true' }
     }
 }
