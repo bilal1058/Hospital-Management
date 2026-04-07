@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     environment {
         DOCKER_COMPOSE_FILE = 'docker-compose.part2.yml'
     }
@@ -11,7 +11,6 @@ pipeline {
                 checkout scm
             }
         }
-
         stage('Build Frontend') {
             steps {
                 script {
