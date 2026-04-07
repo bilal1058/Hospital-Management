@@ -20,7 +20,6 @@ services:
       - hospital-network-v2
 
   web-v2:
-    # ✅ CRITICAL: Use your pre-built image, NOT python:3.11-slim
     image: bilal888/hospital-management:latest
     container_name: hospital-web-v2
     restart: always
@@ -31,10 +30,8 @@ services:
     ports:
       - "8300:8200"
     volumes:
-      # Mount live code - dependencies already in image
       - ./backend:/app/backend
     working_dir: /app/backend
-    # ✅ CRITICAL: Simple command - NO pip install, NO apt-get
     command: uvicorn app.main:app --host 0.0.0.0 --port 8200 --reload
     depends_on:
       db-v2:
